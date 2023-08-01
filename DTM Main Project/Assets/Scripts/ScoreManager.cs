@@ -2,68 +2,69 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
-
 public class ScoreManager : MonoBehaviour
 {
     public ArrayList scoreList = new ArrayList(); 
 
-    public float beatTimer = 0.0f;
+    // General score controlers
     public float scoreTimer = 0.0f;
+    public bool offBeat = true;
     public int scorePos = 0;
-    public int scoreLen = 8;
+    public int scoreLen = 4;
     public int BPM = 90;
     public GameObject player;
     
-    // scoreboard display variables
+    // score display variables
     public Image[] scoreMarkers;
-    public Image scoreTracker;
+    public GameObject scoreTracker;
     public GameObject scoreBar;
+    public float scoreBarWidth;
+
 
     // Plays sound
     public AudioSource playerAudio;
     public AudioClip beat;
 
+
+
+
+
+
     // Start is called before the first frame update
     void Start()
     {
-        scoreList.Add("true");
         scoreList.Add("false");
         scoreList.Add("false");
         scoreList.Add("true");
-        scoreList.Add("true");
-        scoreList.Add("true");
         scoreList.Add("false");
-        scoreList.Add("false");
+
 
         playerAudio = GetComponent<AudioSource>();
 
-        
+        // Gets width of the score bar
+        scoreBarWidth = scoreBar.GetComponent<RectTransform>().sizeDelta.x;
     }
 
     // Update is called once per frame
     void Update()
     {
-        // Activates every second
-        beatTimer += Time.deltaTime;
-        if (beatTimer >= 1) {
-             
-            // Shoots projectile
-            if (scoreList[scorePos] is "true") {
-                player.GetComponent<PlayerController>().ShootProjectile();
-            }
-            
-            playerAudio.PlayOneShot(beat, 1.0f);
-
-            // Resets timer & increases count score position by 1
-            beatTimer = 0;  
-            scorePos += 1;
-            
-            if (scorePos >= scoreLen) {
-                scorePos = 0;
-            }
-            
+        // Adds time to score timer
+        scoreTimer += Time.deltaTime;
+        scoreTracker.GetComponent<RectTransform>().anchoredPosition = new Vector2 ((scoreTimer * scoreBarWidth)/scoreLen-scoreBarWidth/2, scoreTracker.GetComponent<RectTransform>().anchoredPosition.y);
+                                                                              
+        // Resets the score timer if over the total time length of the bar seconds
+        if (scoreTimer > scoreLen) {
+            scoreTimer = 0;
         }
 
-        // Moves the score tracker line along the score
+        Debug.Log(scoreTimer);
+
+        
+        if ((0 <= scoreTimer - Mathf.Floor(scoreTimer)) && (scoreTimer - Mathf.Floor(scoreTimer)) <= 0.5 && !offBeat) { // An elaborate if else expresion for 0 < x < 1
+            offBeat = true;
+        } else if ((0.5 < scoreTimer - Mathf.Floor(scoreTimer)) && (scoreTimer - Mathf.Floor(scoreTimer)) < 1 && offBeat){
+            offBeat = false;
+            player.GetComponent<PlayerController>().ShootProjectile();
+        }
     }
 }
