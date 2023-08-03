@@ -3,7 +3,12 @@ guid: 8673bdaf5be66ca4f82c26900576ca2c
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - player: {instanceID: 0}
+  - scoreTracker: {instanceID: 0}
+  - scoreBar: {instanceID: 0}
+  - playerAudio: {instanceID: 0}
+  - beat: {fileID: 8300000, guid: d4c2ed45925d91148b9f8d80853ae7fb, type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
