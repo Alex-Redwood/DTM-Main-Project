@@ -29,8 +29,6 @@ public class ScoreManager : MonoBehaviour
 
 
 
-
-
     // Start is called before the first frame update
     void Start()
     {
@@ -86,7 +84,7 @@ public class ScoreManager : MonoBehaviour
     void OnNote() 
     {
         if (scoreList[beatNum] is not "empty") {
-            player.GetComponent<PlayerController>().ShootProjectile();
+            player.GetComponent<PlayerController>().ShootProjectileDiamond();
             playerAudio.PlayOneShot(beat);
         }
     }
