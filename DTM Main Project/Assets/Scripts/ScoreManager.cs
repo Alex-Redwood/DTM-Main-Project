@@ -5,7 +5,6 @@ using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
     public ArrayList scoreList = new ArrayList(); 
-
     // General score controlers
     public float scoreTimer = 0.0f;
     public bool offBeat = true;
@@ -16,7 +15,7 @@ public class ScoreManager : MonoBehaviour
     
 
     // score display variables
-    public Image[] scoreMarkers;
+    public Image[4] scoreMarkers;
     public GameObject scoreTracker;
     public GameObject scoreBar;
     public float scoreBarWidth;
@@ -32,10 +31,10 @@ public class ScoreManager : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        scoreList.Add("empty");
-        scoreList.Add("bullet1");
-        scoreList.Add("empty");
-        scoreList.Add("bullet1");
+        scoreList[0] = "empty";
+        scoreList[1] = "bullet1";
+        scoreList[2] = "empty";
+        scoreList[3] = "bullet1";
 
 
         playerAudio = GetComponent<AudioSource>();

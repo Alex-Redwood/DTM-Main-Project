@@ -7,7 +7,7 @@ public class UIManager : MonoBehaviour
 {
     public bool paused = false;
     public GameObject pauseMenu;
-    
+    public GameObject scoreManager;
     void Start() 
     {
         pauseMenu.GetComponent<Canvas>().enabled = false;
@@ -37,6 +37,12 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
         paused = false;
         pauseMenu.GetComponent<Canvas>().enabled = paused;
+    }
+
+    public void CreateMarkers() 
+    {
+        Debug.Log(scoreManager.GetComponent<ScoreManager>().scoreList);
+        
     }
     
 }
