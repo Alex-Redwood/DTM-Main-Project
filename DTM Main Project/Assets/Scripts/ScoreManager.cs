@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
-    public ArrayList scoreList = new ArrayList(); 
+    public string[] scoreList = new string[4];
     // General score controlers
     public float scoreTimer = 0.0f;
     public bool offBeat = true;
@@ -15,7 +15,8 @@ public class ScoreManager : MonoBehaviour
     
 
     // score display variables
-    public Image[4] scoreMarkers;
+    public Image[] scoreMarkers;
+    public Image[] scoreSlots;
     public GameObject scoreTracker;
     public GameObject scoreBar;
     public float scoreBarWidth;
@@ -86,5 +87,18 @@ public class ScoreManager : MonoBehaviour
             player.GetComponent<PlayerController>().ShootProjectileDiamond();
             playerAudio.PlayOneShot(beat);
         }
+    }
+
+    public Vector2 MoveNote(Vector2 mousePos, Vector2 startingPos) {
+        for (int i = 0; i < scoreLen; i++)
+            {
+                Debug.Log(scoreSlots[i].GetComponent<BoxCollider2D>().OverlapPoint(mousePos));
+                if (scoreSlots[i].GetComponent<BoxCollider2D>().OverlapPoint(mousePos))
+                {
+                    scoreSlots[i].GetComponent<UINoteSlots>();
+                    return scoreSlots[i].transform.position;
+                }
+            }
+        return startingPos;
     }
 }
