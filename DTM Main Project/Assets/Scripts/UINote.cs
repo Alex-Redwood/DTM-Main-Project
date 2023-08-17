@@ -7,9 +7,7 @@ using UnityEngine.EventSystems;
 
 public class UINote : MonoBehaviour
 {
-    // Defines mouse position
-    public float noteWidth;
-    public float noteHeight;
+    // Defines dragging related
     public bool dragged;
     public Vector2 offset;
     public Vector2 notePos;
@@ -17,13 +15,14 @@ public class UINote : MonoBehaviour
     public BoxCollider2D hitbox;
     public Vector2 startingPos;
     public GameObject scoreManager;
+
+    //Defines note related
+    public string noteType;
     
 
     // Start is called before the first frame update
     void Start()
     {
-        noteWidth = hitbox.size.x;
-        noteHeight = transform.position.x;
     }
 
     // Update is called once per frame
@@ -42,16 +41,15 @@ public class UINote : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && dragged)
         {
             dragged = false;
-            transform.position = scoreManager.GetComponent<ScoreManager>().MoveNote(mousePos, startingPos);
+            transform.position = scoreManager.GetComponent<ScoreManager>().MoveNote(mousePos, startingPos, gameObject);
+            scoreManager.GetComponent<ScoreManager>().UpdateScore();
+
         }
 
         if (dragged)
         {
             transform.position = mousePos - offset;
         }
-
-
-        // Highlights selected slot
 
     }
 }

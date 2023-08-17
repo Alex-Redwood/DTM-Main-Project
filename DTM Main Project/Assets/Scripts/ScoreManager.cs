@@ -12,11 +12,10 @@ public class ScoreManager : MonoBehaviour
     public int scoreLen = 4; 
     public int BPM = 60;
     public GameObject player;
-    
 
     // score display variables
     public Image[] scoreMarkers;
-    public Image[] scoreSlots;
+    public GameObject[] scoreSlots;
     public GameObject scoreTracker;
     public GameObject scoreBar;
     public float scoreBarWidth;
@@ -36,7 +35,6 @@ public class ScoreManager : MonoBehaviour
         scoreList[1] = "bullet1";
         scoreList[2] = "empty";
         scoreList[3] = "bullet1";
-
 
         playerAudio = GetComponent<AudioSource>();
 
@@ -69,11 +67,10 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
-    void UpdateScore()
+    public void UpdateScore()
     {
         for (int i=0; i < scoreLen; i++) {
-            Debug.Log(scoreList[i]);
-            if (scoreList[i] is "empty") {
+            if (scoreSlots[i].GetComponent<UINoteSlots>().noteList.Count == 0) {
                 scoreMarkers[i].enabled = false;
             } else {
                 scoreMarkers[i].enabled = true;
@@ -83,22 +80,37 @@ public class ScoreManager : MonoBehaviour
 
     void OnNote() 
     {
-        if (scoreList[beatNum] is not "empty") {
+        if (scoreSlots[beatNum].GetComponent<UINoteSlots>().noteList.Count != 0) {
             player.GetComponent<PlayerController>().ShootProjectileDiamond();
             playerAudio.PlayOneShot(beat);
         }
     }
 
-    public Vector2 MoveNote(Vector2 mousePos, Vector2 startingPos) {
+    public Vector2 MoveNote(Vector2 mousePos, Vector2 startingPos, GameObject note) {
         for (int i = 0; i < scoreLen; i++)
             {
-                Debug.Log(scoreSlots[i].GetComponent<BoxCollider2D>().OverlapPoint(mousePos));
+                // If the mouse overlaps with the Note Slot
                 if (scoreSlots[i].GetComponent<BoxCollider2D>().OverlapPoint(mousePos))
                 {
-                    scoreSlots[i].GetComponent<UINoteSlots>();
+                    // Removes note from any list it might have been in
+                    for (int j = 0; j < scoreLen; j++) {
+                        scoreSlots[j].GetComponent<UINoteSlots>().RemoveNote(note);
+                    }
+
+                    // Adds note to new list
+                    scoreSlots[i].GetComponent<UINoteSlots>().AddNote(note);
+
+                    // Adds note to new list
                     return scoreSlots[i].transform.position;
                 }
             }
+            
+        // If not overlapping with any note slot, resets back to original position
         return startingPos;
+    }
+
+    public void UpdateNotePositions() 
+    {
+
     }
 }

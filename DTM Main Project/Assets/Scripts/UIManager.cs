@@ -11,6 +11,7 @@ public class UIManager : MonoBehaviour
     void Start() 
     {
         pauseMenu.GetComponent<Canvas>().enabled = false;
+        pauseMenu.transform.position = new Vector2(-10000,-10000);
     }
 
     void Update()
@@ -37,6 +38,8 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 1;
         paused = false;
         pauseMenu.GetComponent<Canvas>().enabled = paused;
+        pauseMenu.transform.position = new Vector2(-10000,-10000);
+
     }
 
     public void CreateMarkers() 

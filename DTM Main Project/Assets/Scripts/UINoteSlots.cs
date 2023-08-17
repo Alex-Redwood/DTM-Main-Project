@@ -5,11 +5,10 @@ using UnityEngine;
 public class UINoteSlots : MonoBehaviour
 {
     // A list of all notes in this slot
-    public static List<GameObject> noteList = new List<GameObject>();
+    public List<GameObject> noteList = new List<GameObject>();
     
     void Start()
     {
-        
     }
 
     // Update is called once per frame
@@ -18,8 +17,15 @@ public class UINoteSlots : MonoBehaviour
         
     }
 
-    public float GetY()
+    public void AddNote(GameObject note)
     {
-        return 3.0f;
+        
+        noteList.Add(note);
+    }
+
+    public void RemoveNote(GameObject note)
+    {
+        noteList.Remove(note);
+        Debug.Log("Removed Note");
     }
 }
