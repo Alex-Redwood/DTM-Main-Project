@@ -43,6 +43,7 @@ public class UINote : MonoBehaviour
             dragged = false;
             transform.position = scoreManager.GetComponent<ScoreManager>().MoveNote(mousePos, startingPos, gameObject);
             scoreManager.GetComponent<ScoreManager>().UpdateScore();
+            scoreManager.GetComponent<ScoreManager>().UpdateNoteStacking();
 
         }
 

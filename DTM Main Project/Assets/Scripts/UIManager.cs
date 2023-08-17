@@ -43,9 +43,7 @@ public class UIManager : MonoBehaviour
     }
 
     public void CreateMarkers() 
-    {
-        Debug.Log(scoreManager.GetComponent<ScoreManager>().scoreList);
-        
+    {        
     }
     
 }
