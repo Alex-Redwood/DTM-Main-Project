@@ -1,15 +1,28 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using TMPro;
 
 public class InGameNote : MonoBehaviour
 {
-    // Start is called before the first frame update
-    private void OnCollisionEnter2D(Collision2D other){
-        if (other.gameObject.CompareTag("Player")) {
-            other.gameObject.GetComponent<PlayerController>().damageSelf(damageAmount);
-        }
+    public TextMeshProUGUI pickUpNotification;
+    void Update()
+    {
+        foreach (GameObject Player in GameObject.FindGameObjectsWithTag("Player"))
+        {
+            if (Vector3.Distance(transform.position, Player.transform.position) < 1.5) {
+                pickUpNotification.enabled = true;
+                if (Input.GetKeyDown("e")) {
+                    GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<ScoreManager>().PickUpNote(gameObject);
+                    pickUpNotification.enabled = false;
+                    Destroy(gameObject);
+                }
+            } else {
+                pickUpNotification.enabled = false;
+            }
 
-        Destroy(gameObject);
+            
+        } 
     }
 }

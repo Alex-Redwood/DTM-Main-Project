@@ -31,6 +31,7 @@ public class UIManager : MonoBehaviour
         Time.timeScale = 0;
         paused = true;
         pauseMenu.GetComponent<Canvas>().enabled = paused;
+        scoreManager.GetComponent<ScoreManager>().UpdateNoteStacking();
     }
 
     public void ResumeGame() 

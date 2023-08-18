@@ -14,7 +14,7 @@ public class UINote : MonoBehaviour
     public Vector2 mousePos;
     public BoxCollider2D hitbox;
     public Vector2 startingPos;
-    public GameObject scoreManager;
+    private GameObject scoreManager;
 
     //Defines note related
     public string noteType;
@@ -23,6 +23,7 @@ public class UINote : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        scoreManager = GameObject.FindGameObjectWithTag("ScoreManager");
     }
 
     // Update is called once per frame

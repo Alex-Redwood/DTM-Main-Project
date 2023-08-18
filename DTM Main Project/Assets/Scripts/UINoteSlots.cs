@@ -9,6 +9,7 @@ public class UINoteSlots : MonoBehaviour
     
     void Start()
     {
+        
     }
 
     // Update is called once per frame
@@ -29,7 +30,6 @@ public class UINoteSlots : MonoBehaviour
     }
 
     public void ArrangeNotes() {
-        Debug.Log("Reached");
         for (int i=0; i < noteList.Count; i++) {
             noteList[i].transform.position = new Vector2(transform.position.x, transform.position.y + i - 1.3f);
         }

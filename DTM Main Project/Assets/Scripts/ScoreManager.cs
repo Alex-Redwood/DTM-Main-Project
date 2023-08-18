@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 public class ScoreManager : MonoBehaviour
 {
-    public string[] scoreList = new string[4];
+    
     // General score controlers
     public float scoreTimer = 0.0f;
     public bool offBeat = true;
@@ -15,7 +15,6 @@ public class ScoreManager : MonoBehaviour
 
     // score display variables
     public Image[] scoreMarkers;
-    public GameObject[] scoreSlots;
     public GameObject scoreTracker;
     public GameObject scoreBar;
     public float scoreBarWidth;
@@ -26,16 +25,14 @@ public class ScoreManager : MonoBehaviour
     public AudioClip beat;
 
 
-
-
+    // Slots management
+    public List<GameObject> newNoteList = new List<GameObject>();
+    public GameObject[] scoreSlots;
+    public GameObject newNotePrefab;
+    public GameObject newScoreSlot;
     // Start is called before the first frame update
     void Start()
     {
-        scoreList[0] = "empty";
-        scoreList[1] = "bullet1";
-        scoreList[2] = "empty";
-        scoreList[3] = "bullet1";
-
         playerAudio = GetComponent<AudioSource>();
 
         // Gets width of the score bar
@@ -107,6 +104,7 @@ public class ScoreManager : MonoBehaviour
                 {
                     scoreSlots[j].GetComponent<UINoteSlots>().RemoveNote(note);
                 }
+                newNoteList.Remove(note);
 
                 // Adds note to new list
                 scoreSlots[i].GetComponent<UINoteSlots>().AddNote(note);
@@ -122,9 +120,21 @@ public class ScoreManager : MonoBehaviour
 
     public void UpdateNoteStacking()
     {
+        // Repositions notes in slots
         for (int i = 0; i < scoreLen; i++)
         {
             scoreSlots[i].GetComponent<UINoteSlots>().ArrangeNotes();
         }
+
+        // Repositions notes in new notes slot
+        for (int i=0; i < newNoteList.Count; i++) {
+            newNoteList[i].transform.position = new Vector2(newScoreSlot.transform.position.x, newScoreSlot.transform.position.y + i + 0.3f);
+        }
+    }
+
+    public void PickUpNote(GameObject note)
+    {
+        GameObject newNote = Instantiate(newNotePrefab, new Vector3(0, 0, 0), Quaternion.Euler(0,0,0), GameObject.FindGameObjectWithTag("PauseCanvas").transform);
+        newNoteList.Add(newNote);
     }
 }

@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     // Defines Projectiles
     public GameObject projectileDiamondPrefab;
     public GameObject projectileAroundPrefab;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -126,4 +127,6 @@ public class PlayerController : MonoBehaviour
     public void damageSelf(int damageAmount) {
         currentHealth -= damageAmount;
     }
+
+    
 }

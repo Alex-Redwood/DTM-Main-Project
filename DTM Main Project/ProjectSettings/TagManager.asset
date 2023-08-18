@@ -6,6 +6,10 @@ TagManager:
   tags:
   - DamageDealing
   - DamagingObstacle
+  - InGameNote
+  - UICanvas
+  - PauseCanvas
+  - ScoreManager
   layers:
   - Default
   - TransparentFX
