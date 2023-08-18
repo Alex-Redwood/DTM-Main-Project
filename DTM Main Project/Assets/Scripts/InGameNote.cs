@@ -6,23 +6,19 @@ using TMPro;
 
 public class InGameNote : MonoBehaviour
 {
-    public TextMeshProUGUI pickUpNotification;
+    public string noteType;
+
     void Update()
     {
-        foreach (GameObject Player in GameObject.FindGameObjectsWithTag("Player"))
-        {
-            if (Vector3.Distance(transform.position, Player.transform.position) < 1.5) {
-                pickUpNotification.enabled = true;
-                if (Input.GetKeyDown("e")) {
-                    GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<ScoreManager>().PickUpNote(gameObject);
-                    pickUpNotification.enabled = false;
-                    Destroy(gameObject);
-                }
-            } else {
-                pickUpNotification.enabled = false;
-            }
+        GameObject Player = GameObject.FindGameObjectWithTag("Player");
 
-            
-        } 
+        if (Vector3.Distance(transform.position, Player.transform.position) < 1.5)
+        {
+            if (Input.GetKeyDown("e"))
+            {
+                GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<ScoreManager>().PickUpNote(gameObject);
+                Destroy(gameObject);
+            }
+        }
     }
 }

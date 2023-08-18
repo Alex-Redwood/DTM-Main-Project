@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
+
+
 public class ScoreManager : MonoBehaviour
 {
-    
+
     // General score controlers
     public float scoreTimer = 0.0f;
     public bool offBeat = true;
@@ -30,6 +33,8 @@ public class ScoreManager : MonoBehaviour
     public GameObject[] scoreSlots;
     public GameObject newNotePrefab;
     public GameObject newScoreSlot;
+    public TextMeshProUGUI pickUpNotification;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +59,8 @@ public class ScoreManager : MonoBehaviour
             beatNum = 0;
         }
 
-
+        // Updates if the pick up with e notification should be shown
+        PickUpNotification();
 
         if ((0 <= scoreTimer - Mathf.Floor(scoreTimer)) && (scoreTimer - Mathf.Floor(scoreTimer)) <= 0.5 && !offBeat)
         { // An elaborate if else expresion for 0 < x < 0.5
@@ -87,7 +93,21 @@ public class ScoreManager : MonoBehaviour
     {
         if (scoreSlots[beatNum].GetComponent<UINoteSlots>().noteList.Count != 0)
         {
-            player.GetComponent<PlayerController>().ShootProjectileDiamond();
+            foreach (GameObject note in scoreSlots[beatNum].GetComponent<UINoteSlots>().noteList)
+            {
+                string noteType = note.GetComponent<UINote>().noteType;
+                if (noteType == "aroundProjectile")
+                {
+                    player.GetComponent<PlayerController>().ShootProjectileAround();
+
+                }
+                else if (noteType is "diamondProjectile")
+                {
+
+                    player.GetComponent<PlayerController>().ShootProjectileDiamond();
+                }
+            }
+
             playerAudio.PlayOneShot(beat);
         }
     }
@@ -105,10 +125,9 @@ public class ScoreManager : MonoBehaviour
                     scoreSlots[j].GetComponent<UINoteSlots>().RemoveNote(note);
                 }
                 newNoteList.Remove(note);
-
                 // Adds note to new list
                 scoreSlots[i].GetComponent<UINoteSlots>().AddNote(note);
-
+            
                 // Adds note to new list
                 return scoreSlots[i].transform.position;
             }
@@ -127,14 +146,29 @@ public class ScoreManager : MonoBehaviour
         }
 
         // Repositions notes in new notes slot
-        for (int i=0; i < newNoteList.Count; i++) {
-            newNoteList[i].transform.position = new Vector2(newScoreSlot.transform.position.x, newScoreSlot.transform.position.y + i + 0.3f);
+        for (int i = 0; i < newNoteList.Count; i++)
+        {
+            newNoteList[i].transform.position = new Vector2(newScoreSlot.transform.position.x, newScoreSlot.transform.position.y + i + 0.6f);
         }
     }
 
     public void PickUpNote(GameObject note)
     {
-        GameObject newNote = Instantiate(newNotePrefab, new Vector3(0, 0, 0), Quaternion.Euler(0,0,0), GameObject.FindGameObjectWithTag("PauseCanvas").transform);
+        GameObject newNote = Instantiate(newNotePrefab, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), GameObject.FindGameObjectWithTag("PauseCanvas").transform);
+        newNote.GetComponent<UINote>().noteType = note.GetComponent<InGameNote>().noteType;
+        newNote.GetComponent<Image>().color = note.GetComponent<SpriteRenderer>().color;
         newNoteList.Add(newNote);
+    }
+
+    public void PickUpNotification()
+    {
+        pickUpNotification.enabled = false;
+        foreach (GameObject note in GameObject.FindGameObjectsWithTag("InGameNote"))
+        {
+            if (Vector3.Distance(note.transform.position, player.transform.position) < 1.5)
+            {
+                pickUpNotification.enabled = true;
+            }
+        }
     }
 }
