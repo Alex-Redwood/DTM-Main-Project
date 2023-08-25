@@ -10,6 +10,7 @@ TagManager:
   - UICanvas
   - PauseCanvas
   - ScoreManager
+  - Enemy
   layers:
   - Default
   - TransparentFX
@@ -19,8 +20,8 @@ TagManager:
   - UI
   - 
   - 
-  - 
-  - 
+  - PlayerBullets
+  - Player
   - 
   - 
   - 
@@ -46,6 +47,9 @@ TagManager:
   m_SortingLayers:
   - name: BelowLevel
     uniqueID: 2257549519
+    locked: 0
+  - name: BulletLayer
+    uniqueID: 3290835323
     locked: 0
   - name: Default
     uniqueID: 0
