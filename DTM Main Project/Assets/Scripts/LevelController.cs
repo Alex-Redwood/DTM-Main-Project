@@ -8,6 +8,7 @@ using UnityEngine.UI;
 public class LevelController : MonoBehaviour
 {
     public float newRoundTimer;
+    public float spawnDelay;
     public int roundNumber;
     public int enemiesNotSpawned;
     public GameObject enemyPrefab;
@@ -27,11 +28,14 @@ public class LevelController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        // Starts a new round if the old one is over
         if (enemies.Count == 0 && enemiesNotSpawned == 0) {
             roundNumber++;
             Debug.Log("New Round");
             newRoundHeader.enabled = true;
             newRoundBody.enabled = true;
+            newRoundHeader.color = new Color(newRoundHeader.color.r,newRoundHeader.color.g,newRoundHeader.color.b,1);
+            newRoundBody.color = new Color(newRoundHeader.color.r,newRoundHeader.color.g,newRoundHeader.color.b,1);
             newRoundTimer = 4;
             string newRoundTitle = "Round " + roundNumber;
 
@@ -39,11 +43,34 @@ public class LevelController : MonoBehaviour
             newRound();
         }
         if ( 0 < newRoundTimer && newRoundTimer < 1) {
+            newRoundHeader.color = new Color(newRoundHeader.color.r,newRoundHeader.color.g,newRoundHeader.color.b,Mathf.Abs(newRoundTimer));
+            newRoundBody.color = new Color(newRoundHeader.color.r,newRoundHeader.color.g,newRoundHeader.color.b,Mathf.Abs(newRoundTimer));
+            newRoundTimer -= Time.deltaTime;
+        } else if ( 0 >= newRoundTimer && newRoundTimer != -1) {
             newRoundHeader.enabled = false;
             newRoundBody.enabled = false;
             newRoundTimer = -1;
-        } else {
+        
+        } else if (newRoundTimer != -1) {
             newRoundTimer -= Time.deltaTime;
+        }
+        
+        for (int i = 0; i < enemies.Count; i++) {
+            if (!enemies[i].GetComponent<TriangleEnemy>().alive) {
+                enemies.Remove(enemies[i]);
+            }
+        }
+        
+        // Spawns enemies with a random time interval between them, and that time gets shorter the more rounds there are
+        if (newRoundTimer == -1 && enemiesNotSpawned != 0) {
+            if (spawnDelay < 0 ) {
+                GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.Euler(0, 0, 0));
+                enemies.Add(newEnemy);
+                enemiesNotSpawned -= 1;
+                spawnDelay = 1;
+            } else {
+                spawnDelay -= Time.deltaTime;
+            }
         }
     }
 

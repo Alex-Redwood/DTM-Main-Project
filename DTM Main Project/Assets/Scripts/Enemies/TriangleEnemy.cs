@@ -9,6 +9,7 @@ public class TriangleEnemy : MonoBehaviour
     private GameObject target;
     Vector2 moveDirection; 
     public int damageAmount;
+    public bool alive = true;
 
 
     // Start is called before the first frame update
@@ -25,11 +26,11 @@ public class TriangleEnemy : MonoBehaviour
         // Sets spawn location
         GameObject Player = GameObject.FindGameObjectWithTag("Player");
 
-        transform.position = new Vector2();
-        /*while (Vector3.Distance(transform.position, Player.transform.position) < 3)
+        transform.position = new Vector2(Random.Range(-8f,8f), Random.Range(-4.2f,4.2f));
+        while (Vector3.Distance(transform.position, Player.transform.position) < 3)
         {
-            transform.position = new Vector2(Random.t);
-        }*/
+            transform.position = new Vector2(Random.Range(-8f,8f), Random.Range(-4.2f,4.2f));
+        }
         
     }
 
@@ -51,6 +52,7 @@ public class TriangleEnemy : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D other){
         if (other.gameObject.CompareTag("Player")) {
             other.gameObject.GetComponent<PlayerController>().damageSelf(damageAmount);
+            alive = false;
             Destroy(gameObject);
         }
 
