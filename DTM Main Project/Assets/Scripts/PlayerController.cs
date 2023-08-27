@@ -129,11 +129,11 @@ public class PlayerController : MonoBehaviour
 
             if (i < currentHealth)
             {
-                hearts[i].enabled = true;
+                hearts[i].GetComponent<Animator>().SetInteger("healthState", 0);
             }
             else
             {
-                hearts[i].enabled = false;
+                hearts[i].GetComponent<Animator>().SetInteger("healthState", 1);
             }
         }
 
