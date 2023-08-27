@@ -12,7 +12,7 @@ public class LevelController : MonoBehaviour
     public int roundNumber;
     public int enemiesNotSpawned;
     public GameObject enemyPrefab;
-    public GameObject notePrefabDiamond;
+    public GameObject[] notePrefabs;
     public GameObject scoreManager;
     public List<GameObject> enemies = new List<GameObject>();
     public TextMeshProUGUI newRoundHeader;
@@ -31,7 +31,6 @@ public class LevelController : MonoBehaviour
         // Starts a new round if the old one is over
         if (enemies.Count == 0 && enemiesNotSpawned == 0) {
             roundNumber++;
-            Debug.Log("New Round");
             newRoundHeader.enabled = true;
             newRoundBody.enabled = true;
             newRoundHeader.color = new Color(newRoundHeader.color.r,newRoundHeader.color.g,newRoundHeader.color.b,1);
@@ -56,7 +55,7 @@ public class LevelController : MonoBehaviour
         }
         
         for (int i = 0; i < enemies.Count; i++) {
-            if (!enemies[i].GetComponent<TriangleEnemy>().alive) {
+            if (enemies[i] == null) {
                 enemies.Remove(enemies[i]);
             }
         }
@@ -67,7 +66,7 @@ public class LevelController : MonoBehaviour
                 GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.Euler(0, 0, 0));
                 enemies.Add(newEnemy);
                 enemiesNotSpawned -= 1;
-                spawnDelay = 1;
+                spawnDelay = 0;
             } else {
                 spawnDelay -= Time.deltaTime;
             }
@@ -78,18 +77,18 @@ public class LevelController : MonoBehaviour
     void newRound() {
         string newRoundInfo = "";
         // Sets number of enemies
-        if (enemiesNotSpawned <= 4) {
+        if (roundNumber <= 4) {
             enemiesNotSpawned = roundNumber + 1;
             
         } else {
             enemiesNotSpawned = 2 * roundNumber - 3;
         }
-        newRoundInfo = newRoundInfo + roundNumber + " Enemies<br>";
+        newRoundInfo = newRoundInfo + enemiesNotSpawned + " Enemies<br>";
 
 
         // Creates a new note if needed
         if (roundNumber <= 5 || (roundNumber-7)%3 == 0) {
-            Instantiate(notePrefabDiamond, transform.position,Quaternion.Euler(0, 0, 0));
+            Instantiate(notePrefabs[Random.Range(0, notePrefabs.Length)], transform.position,Quaternion.Euler(0, 0, 0));
             newRoundInfo = newRoundInfo + "+1 Note<br>";
         }
 
