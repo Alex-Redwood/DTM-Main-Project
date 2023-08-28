@@ -796,8 +796,6 @@ MonoBehaviour:
   rb: {fileID: 166382378}
   mousePos: {x: 0, y: 0}
   playerMouse: {x: 0, y: 0}
-  currentDash: {x: 0, y: 0}
-  startingDash: {x: 0, y: 0}
   pointer: {fileID: 879065655}
   pointerPos: {x: 0, y: 0}
   maxHealth: 0
@@ -2685,7 +2683,7 @@ GameObject:
   - component: {fileID: 684382527}
   m_Layer: 0
   m_Name: UIManager
-  m_TagString: Untagged
+  m_TagString: UIManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2725,6 +2723,7 @@ MonoBehaviour:
   player: {fileID: 166382374}
   highScore: 0
   highScoreText: {fileID: 1166671698}
+  animationDelay: 0
 --- !u!1 &783508969
 GameObject:
   m_ObjectHideFlags: 0

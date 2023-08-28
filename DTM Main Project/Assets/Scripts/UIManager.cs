@@ -89,8 +89,8 @@ public class UIManager : MonoBehaviour
         GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelController>().resetAll();
         GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<ScoreManager>().DestroyAllNotes();
 
-        while (GameObject.FindGameObjectsWithTag("InGameNote").Length > 0) {
-            Destroy(GameObject.FindGameObjectsWithTag("InGameNote")[0]);
+        for (int i=0; i < GameObject.FindGameObjectsWithTag("InGameNote").Length; i++) {
+            Destroy(GameObject.FindGameObjectsWithTag("InGameNote")[i]);
         }
 
     }
