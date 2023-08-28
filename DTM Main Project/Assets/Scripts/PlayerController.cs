@@ -14,10 +14,6 @@ public class PlayerController : MonoBehaviour
     public Vector2 mousePos;
     public Vector2 playerMouse;
 
-    // Dash related variables
-    public Vector2 currentDash;
-    public Vector2 startingDash;
-
     // Pointer control
     public GameObject pointer;
     public Vector2 pointerPos;
@@ -35,22 +31,24 @@ public class PlayerController : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        {
-            maxHealth = hearts.Length;
-            currentHealth = maxHealth;
-        }
+
+        maxHealth = hearts.Length;
+        currentHealth = maxHealth;
+
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (Time.timeScale == 1) {
-        //Controls pointer position
-        PointerPosition();
+        // Makes sure the player only does stuff if alive
+        if (currentHealth > 0)
+        {
+            if (Time.timeScale == 1)
+            {
+                //Controls pointer position
+                PointerPosition();
+            }
         }
-    
-
-        // Updates health
         updateHealth();
     }
 
@@ -58,9 +56,13 @@ public class PlayerController : MonoBehaviour
     // Use FixedUpdate for physics related
     void FixedUpdate()
     {
-        movementInput.x = Input.GetAxis("Horizontal");
-        movementInput.y = Input.GetAxis("Vertical");
-        rb.velocity = new Vector2(movementInput.x, movementInput.y) * speed + currentDash;
+        // Makes sure the player only does stuff if alive
+        if (currentHealth > 0)
+        {
+            movementInput.x = Input.GetAxis("Horizontal");
+            movementInput.y = Input.GetAxis("Vertical");
+            rb.velocity = new Vector2(movementInput.x, movementInput.y) * speed;
+        }
     }
 
     // Manages collisions
@@ -75,7 +77,7 @@ public class PlayerController : MonoBehaviour
     // Creates a basic projectile
     public void ShootProjectileDiamond()
     {
-        // Finds vector pointing from player to mouse
+            // Finds vector pointing from player to mouse
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         playerMouse = new Vector3(mousePos.x, mousePos.y, transform.position.z) - transform.position;
         playerMouse.Normalize();
@@ -135,6 +137,11 @@ public class PlayerController : MonoBehaviour
             {
                 hearts[i].GetComponent<Animator>().SetInteger("healthState", 1);
             }
+
+            if (currentHealth <= 0) {
+                hearts[i].GetComponent<Animator>().SetInteger("healthState", 1);
+                
+            }
         }
 
         return hearts;
@@ -146,22 +153,8 @@ public class PlayerController : MonoBehaviour
         currentHealth -= damageAmount;
     }
 
-    Vector2 UpdateDash()
-    {
-        if (currentDash.x > 0)
-        {
-            currentDash = currentDash - Time.deltaTime * startingDash;
-        }
-        else
-        {
-            currentDash = new Vector2(0, 0);
-        }
 
-        return currentDash;
-
-    }
-
-    void PointerPosition() 
+    void PointerPosition()
     {
         mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
         playerMouse = new Vector3(mousePos.x - transform.position.x, mousePos.y - transform.position.y);
