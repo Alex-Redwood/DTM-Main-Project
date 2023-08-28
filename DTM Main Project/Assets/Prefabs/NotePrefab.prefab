@@ -15,7 +15,7 @@ GameObject:
   - component: {fileID: 7438972133865879231}
   m_Layer: 5
   m_Name: NotePrefab
-  m_TagString: Untagged
+  m_TagString: UINote
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -122,5 +122,4 @@ MonoBehaviour:
   mousePos: {x: 0, y: 0}
   hitbox: {fileID: 1870781534165177226}
   startingPos: {x: 0, y: 0}
-  scoreManager: {fileID: 0}
   noteType: 

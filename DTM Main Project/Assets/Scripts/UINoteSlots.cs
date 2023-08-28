@@ -23,4 +23,11 @@ public class UINoteSlots : MonoBehaviour
         }
         
     }
+
+    public void EraseNotes() {
+        while (noteList.Count > 0) {
+        Destroy(noteList[0]);
+        noteList.Remove(noteList[0]);
+        }
+    }
 }

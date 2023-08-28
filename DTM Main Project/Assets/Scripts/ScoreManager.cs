@@ -89,6 +89,7 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    // Shoots projectile once the score gets to it.
     void OnNote()
     {
         if (scoreSlots[beatNum].GetComponent<UINoteSlots>().noteList.Count != 0)
@@ -112,6 +113,7 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    // Moves notes from one place to another inside the UI.
     public Vector2 MoveNote(Vector2 mousePos, Vector2 startingPos, GameObject note)
     {
         for (int i = 0; i < scoreLen; i++)
@@ -137,6 +139,7 @@ public class ScoreManager : MonoBehaviour
         return startingPos;
     }
 
+    // Updates the positioning of active notes inside their score slots
     public void UpdateNoteStacking()
     {
         // Repositions notes in slots
@@ -152,6 +155,7 @@ public class ScoreManager : MonoBehaviour
         }
     }
 
+    // Triggered when you pick up a not in game
     public void PickUpNote(GameObject note)
     {
         GameObject newNote = Instantiate(newNotePrefab, new Vector3(0, 0, 0), Quaternion.Euler(0, 0, 0), GameObject.FindGameObjectWithTag("PauseCanvas").transform);
@@ -160,6 +164,7 @@ public class ScoreManager : MonoBehaviour
         newNoteList.Add(newNote);
     }
 
+    // Controls when the "pick up with e" notification is shown
     public void PickUpNotification()
     {
         pickUpNotification.enabled = false;
@@ -169,6 +174,19 @@ public class ScoreManager : MonoBehaviour
             {
                 pickUpNotification.enabled = true;
             }
+        }
+    }
+
+    public void DestroyAllNotes() {
+        for (int i = 0; i < scoreLen; i++)
+        {
+            scoreSlots[i].GetComponent<UINoteSlots>().EraseNotes();
+        }
+        UpdateScore();
+
+        while (newNoteList.Count > 0) {
+            Destroy(newNoteList[0]);
+            newNoteList.Remove(newNoteList[0]);
         }
     }
 }

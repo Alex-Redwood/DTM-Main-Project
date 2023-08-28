@@ -29,7 +29,7 @@ public class LevelController : MonoBehaviour
     void Update()
     {
         // Starts a new round if the old one is over
-        if (enemies.Count == 0 && enemiesNotSpawned == 0) {
+        if (enemies.Count == 0 && enemiesNotSpawned == 0 && Time.timeScale == 1) {
             roundNumber++;
             newRoundHeader.enabled = true;
             newRoundBody.enabled = true;
@@ -41,6 +41,8 @@ public class LevelController : MonoBehaviour
             newRoundHeader.text = newRoundTitle;
             newRound();
         }
+
+        
         if ( 0 < newRoundTimer && newRoundTimer < 1) {
             newRoundHeader.color = new Color(newRoundHeader.color.r,newRoundHeader.color.g,newRoundHeader.color.b,Mathf.Abs(newRoundTimer));
             newRoundBody.color = new Color(newRoundHeader.color.r,newRoundHeader.color.g,newRoundHeader.color.b,Mathf.Abs(newRoundTimer));
@@ -66,7 +68,7 @@ public class LevelController : MonoBehaviour
                 GameObject newEnemy = Instantiate(enemyPrefab, transform.position, Quaternion.Euler(0, 0, 0));
                 enemies.Add(newEnemy);
                 enemiesNotSpawned -= 1;
-                spawnDelay = 0;
+                spawnDelay = Random.Range(1/roundNumber, 5/roundNumber);
             } else {
                 spawnDelay -= Time.deltaTime;
             }
@@ -100,5 +102,20 @@ public class LevelController : MonoBehaviour
        
 
         newRoundBody.text = newRoundInfo;
+    }
+
+    public void resetAll() {
+        for (int i = 0; i < enemies.Count; i++) {
+            if (enemies[i] == null) {
+                enemies.Remove(enemies[i]);
+            }
+        }
+
+        while (enemies.Count > 0) {
+            Destroy(enemies[0]);
+            enemies.Remove(enemies[0]);
+        }
+        enemiesNotSpawned = 0;
+        roundNumber = 0;        
     }
 }

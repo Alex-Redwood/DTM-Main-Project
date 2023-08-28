@@ -11,6 +11,10 @@ TagManager:
   - PauseCanvas
   - ScoreManager
   - Enemy
+  - MenuCanvas
+  - LevelManager
+  - Projectile
+  - UINote
   layers:
   - Default
   - TransparentFX

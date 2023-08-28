@@ -44,10 +44,10 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        // Controls dash
-
+        if (Time.timeScale == 1) {
         //Controls pointer position
         PointerPosition();
+        }
     
 
         // Updates health

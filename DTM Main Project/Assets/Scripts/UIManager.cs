@@ -2,27 +2,38 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class UIManager : MonoBehaviour
 {
     public bool paused = false;
+    public bool inMenu = true;
     public GameObject pauseMenu;
+    public GameObject mainMenu;
     public GameObject scoreManager;
+    public GameObject player;
+    public int highScore = 0;
+    public TextMeshProUGUI highScoreText;
     void Start() 
     {
         pauseMenu.GetComponent<Canvas>().enabled = false;
         pauseMenu.transform.position = new Vector2(-10000,-10000);
+        startMenu();
     }
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) && !inMenu)
         {
             if (paused) {
                 ResumeGame();
             } else {
                 PauseGame();
             }
+        }
+
+        if (player.GetComponent<PlayerController>().currentHealth <= 0) {
+            startMenu();
         }
     }
     
@@ -43,8 +54,32 @@ public class UIManager : MonoBehaviour
 
     }
 
-    public void CreateMarkers() 
-    {        
+    public void startMenu() {
+        Time.timeScale = 0;
+        inMenu = true;
+        mainMenu.GetComponent<Canvas>().enabled = true;
+        highScoreText.text = "Best Round: " + highScore;
+        
+    }
+
+
+    public void endMenu() {
+        Time.timeScale = 1;
+        inMenu = false;
+        mainMenu.GetComponent<Canvas>().enabled = false;
+        pauseMenu.transform.position = new Vector2(-10000,-10000);
+        resetLevel();
     }
     
+    public void resetLevel() {
+        player.GetComponent<PlayerController>().currentHealth = player.GetComponent<PlayerController>().maxHealth;
+        if (GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelController>().roundNumber > highScore) {
+            highScore = GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelController>().roundNumber;
+        }
+        highScoreText.text = "Best Round: " + highScore;
+        GameObject.FindGameObjectWithTag("LevelManager").GetComponent<LevelController>().resetAll();
+        GameObject.FindGameObjectWithTag("ScoreManager").GetComponent<ScoreManager>().DestroyAllNotes();
+
+        
+    }
 }
